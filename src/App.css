@@ -1,0 +1,13 @@
+:root {
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
+		sans-serif;
+	font-size: 16px;
+}
+
+#root {
+	height: 100vh;
+	width: 100%;
+	box-sizing: border-box;
+	background-color: rgb(225, 225, 225);
+	overflow-y: hidden;
+}
