@@ -14,7 +14,7 @@ const Home = (props) => {
 					/>
 					<div className='levelInfo'>
 						<h3>{item.id}</h3>
-						<div className='characters'>
+						<div className='infoCharacters'>
 							{item.characters.map((char, index) => {
 								return (
 									<img
@@ -31,7 +31,14 @@ const Home = (props) => {
 		);
 	});
 
-	return <div className='home'>{display}</div>;
+	return (
+		<div className='home'>
+			<div className='header'>
+				<h1>Where's Waldo</h1>
+			</div>
+			<div className='allLevels'>{display}</div>
+		</div>
+	);
 };
 
 export default Home;
