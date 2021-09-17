@@ -13,32 +13,72 @@ const levels = [
 		id: 'Level 1',
 		picture: picture1,
 		characters: [
-			{ name: 'Waldo', photo: Waldo, found: false },
-			{ name: 'Odlaw', photo: Odlaw, found: false },
+			{
+				name: 'Waldo',
+				photo: Waldo,
+				coords: { X: 1125, Y: 95 },
+				found: false,
+			},
+			{
+				name: 'Odlaw',
+				photo: Odlaw,
+				coords: { X: 70, Y: 770 },
+				found: false,
+			},
 		],
 	},
 	{
 		id: 'Level 2',
 		picture: picture2,
 		characters: [
-			{ name: 'Waldo', photo: Waldo, found: false },
-			{ name: 'Odlaw', photo: Odlaw, found: false },
+			{
+				name: 'Waldo',
+				photo: Waldo,
+				coords: { X: 670, Y: 220 },
+				found: false,
+			},
+			{
+				name: 'Wenda',
+				photo: Wenda,
+				coords: { X: 315, Y: 335 },
+				found: false,
+			},
+			{
+				name: 'Wizard',
+				photo: Wizard,
+				coords: { X: 970, Y: 175 },
+				found: false,
+			},
 		],
 	},
 	{
 		id: 'Level 3',
 		picture: picture3,
 		characters: [
-			{ name: 'Waldo', photo: Waldo, found: false },
-			{ name: 'Odlaw', photo: Odlaw, found: false },
+			{
+				name: 'Waldo',
+				photo: Waldo,
+				coords: { X: 695, Y: 355 },
+				found: false,
+			},
+			{
+				name: 'Wenda',
+				photo: Wenda,
+				coords: { X: 1005, Y: 400 },
+				found: false,
+			},
 		],
 	},
 	{
 		id: 'Level 4',
 		picture: picture4,
 		characters: [
-			{ name: 'Waldo', photo: Waldo, found: false },
-			{ name: 'Odlaw', photo: Odlaw, found: false },
+			{
+				name: 'Wenda',
+				photo: Wenda,
+				coords: { X: 1060, Y: 765 },
+				found: false,
+			},
 		],
 	},
 ];
