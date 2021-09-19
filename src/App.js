@@ -26,7 +26,7 @@ const App = () => {
 						files.forEach((file) => {
 							array.push(file.data());
 						});
-						setAllLevelsData(files.data());
+						setAllLevelsData(array);
 					}
 				);
 			} catch (error) {
