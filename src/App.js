@@ -26,16 +26,15 @@ const App = () => {
 
 		(async () => {
 			try {
-				const files = await getDocs(
-					collection(getFirestore(), 'gameLevels')
-				).then((files) => {
-					const array = [];
-					files.forEach((file) => {
-						array.push(file.data());
-					});
-					return array;
-				});
-				setAllLevelsData(files);
+				await getDocs(collection(getFirestore(), 'gameLevels')).then(
+					(files) => {
+						const array = [];
+						files.forEach((file) => {
+							array.push(file.data());
+						});
+						setAllLevelsData(files.data());
+					}
+				);
 			} catch (error) {
 				console.log(
 					'Error reading data from Firebase Database: ',
