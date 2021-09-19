@@ -7,11 +7,13 @@ import {
 	serverTimestamp,
 	getDoc,
 	doc,
+	setDoc,
 } from 'firebase/firestore';
 
 const Game = (props) => {
 	const [gameId, setGameId] = useState();
 	const [levelData, setLevelData] = useState(props.data);
+	const [characters, setCharacters] = useState();
 	const [showContextMenu, setShowContextMenu] = useState(false);
 	const [clickedCoord, setClickedCoord] = useState();
 
@@ -21,10 +23,15 @@ const Game = (props) => {
 				levelData,
 				gameStart: serverTimestamp(),
 			}).then((docRef) => {
+				setCharacters(levelData.characters);
 				setGameId(docRef.id);
 				localStorage.setItem('currentLevel', levelData.id);
 			});
-		} else {
+		}
+	}, [levelData]);
+
+	useEffect(() => {
+		if (!levelData) {
 			const currentLevel = localStorage.getItem('currentLevel');
 			(async () => {
 				try {
@@ -41,7 +48,21 @@ const Game = (props) => {
 				}
 			})();
 		}
-	}, [levelData]);
+	}, []);
+
+	useEffect(() => {
+		const foundAll = characters?.every((char) => char.found === true);
+		if (foundAll) {
+			setDoc(
+				doc(getFirestore(), 'usersGames', gameId),
+				{
+					gameEnd: serverTimestamp(),
+				},
+				{ merge: true }
+			);
+			console.log('Game Over');
+		}
+	}, [characters, gameId]);
 
 	const onImageClick = (e) => {
 		const { pageX, pageY, offsetX, offsetY } = e.nativeEvent;
@@ -66,10 +87,7 @@ const Game = (props) => {
 			const newCharState = levelData.characters.map((char) => {
 				return char.name === id ? { ...char, found: true } : char;
 			});
-			setLevelData((prevState) => ({
-				...prevState,
-				characters: newCharState,
-			}));
+			setCharacters(newCharState);
 		}
 	};
 
@@ -77,7 +95,7 @@ const Game = (props) => {
 		return charCoord >= clickedCoord - 10 && charCoord <= clickedCoord + 10;
 	};
 
-	const headerDisplayCharacters = levelData?.characters.map((char, index) => {
+	const headerDisplayCharacters = characters?.map((char, index) => {
 		return (
 			<img
 				key={index}
@@ -88,7 +106,7 @@ const Game = (props) => {
 		);
 	});
 
-	const contectMenuCharacters = levelData?.characters.map((char, index) => {
+	const contectMenuCharacters = characters?.map((char, index) => {
 		return (
 			<div
 				key={index}
