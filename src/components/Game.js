@@ -1,12 +1,47 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {
+	addDoc,
+	collection,
+	getFirestore,
+	serverTimestamp,
+	getDoc,
+	doc,
+} from 'firebase/firestore';
 
 const Game = (props) => {
-	const { levelData } = props;
-
-	const [characters, setCharacters] = useState(levelData.characters);
+	const [gameId, setGameId] = useState();
+	const [levelData, setLevelData] = useState(props.data);
 	const [showContextMenu, setShowContextMenu] = useState(false);
 	const [clickedCoord, setClickedCoord] = useState();
+
+	useEffect(() => {
+		if (levelData) {
+			addDoc(collection(getFirestore(), 'usersGames'), {
+				levelData,
+				gameStart: serverTimestamp(),
+			}).then((docRef) => {
+				setGameId(docRef.id);
+				localStorage.setItem('currentLevel', levelData.id);
+			});
+		} else {
+			const currentLevel = localStorage.getItem('currentLevel');
+			(async () => {
+				try {
+					await getDoc(
+						doc(getFirestore(), 'gameLevels', currentLevel)
+					).then((file) => {
+						setLevelData(file.data());
+					});
+				} catch (error) {
+					console.log(
+						'Error reading data from Firebase Database: ',
+						error
+					);
+				}
+			})();
+		}
+	}, [levelData]);
 
 	const onImageClick = (e) => {
 		const { pageX, pageY, offsetX, offsetY } = e.nativeEvent;
@@ -20,19 +55,21 @@ const Game = (props) => {
 		setShowContextMenu((prevState) => !prevState);
 	};
 
-	const onContextMenuClick = (e) => {
-		const { id } = e.currentTarget;
-		const clickedCharacter = characters.find((char) => {
+	const onContextMenuClick = (id) => {
+		const clickedCharacter = levelData.characters.find((char) => {
 			return char.name === id;
 		});
 		const result =
 			isCoordWithinRange(clickedCoord.X, clickedCharacter.coords.X) &&
 			isCoordWithinRange(clickedCoord.Y, clickedCharacter.coords.Y);
 		if (result) {
-			const newState = characters.map((char) => {
+			const newCharState = levelData.characters.map((char) => {
 				return char.name === id ? { ...char, found: true } : char;
 			});
-			setCharacters(newState);
+			setLevelData((prevState) => ({
+				...prevState,
+				characters: newCharState,
+			}));
 		}
 	};
 
@@ -40,10 +77,25 @@ const Game = (props) => {
 		return charCoord >= clickedCoord - 10 && charCoord <= clickedCoord + 10;
 	};
 
-	const contectMenuCharacters = levelData.characters.map((char, index) => {
+	const headerDisplayCharacters = levelData?.characters.map((char, index) => {
 		return (
-			<div id={char.name} key={index} onClick={onContextMenuClick}>
-				<img src={char.photo} alt={char.name} />
+			<img
+				key={index}
+				src={char.photoURL}
+				alt={char.name}
+				className={char.found ? 'found' : 'notFound'}
+			/>
+		);
+	});
+
+	const contectMenuCharacters = levelData?.characters.map((char, index) => {
+		return (
+			<div
+				key={index}
+				className={char.found ? 'found' : 'notFound'}
+				onClick={() => onContextMenuClick(char.name)}
+			>
+				<img src={char.photoURL} alt={char.name} />
 				<h4>{char.name}</h4>
 			</div>
 		);
@@ -54,18 +106,7 @@ const Game = (props) => {
 			<div className='gameHeader'>
 				<h1>Where's Waldo</h1>
 				<div className='headerCharacters'>
-					{characters
-						? characters.map((char, index) => (
-								<img
-									key={index}
-									src={char.photo}
-									alt={char.name}
-									className={
-										char.found ? 'found' : 'notFound'
-									}
-								/>
-						  ))
-						: null}
+					{headerDisplayCharacters}
 				</div>
 				<Link to='/'>
 					<button className='homeLink'>Home Page</button>
@@ -80,8 +121,8 @@ const Game = (props) => {
 				</div>
 				<img
 					className='gameLevel'
-					src={levelData.picture}
-					alt={levelData.levelId}
+					src={levelData?.pictureURL}
+					alt={levelData?.levelId}
 				/>
 			</div>
 		</div>
