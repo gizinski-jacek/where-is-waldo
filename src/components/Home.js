@@ -1,32 +1,32 @@
 import { Link } from 'react-router-dom';
 
 const Home = (props) => {
-	const { allLevels, goToLevel } = props;
+	const { allLevelsData, goToLevel } = props;
 
-	const display = allLevels.map((item) => {
+	const display = allLevelsData.map((item) => {
 		return (
 			<div key={item.id} className='preview'>
-				<Link to='game' id={item.id} onClick={goToLevel}>
+				<Link to='game' onClick={() => goToLevel(item.id)}>
 					<img
 						className='levelPreview'
-						src={item.picture}
+						src={item.pictureURL}
 						alt={item.id}
 					/>
-					<div className='levelInfo'>
-						<h3>{item.id}</h3>
-						<div className='infoCharacters'>
-							{item.characters.map((char, index) => {
-								return (
-									<img
-										key={index}
-										src={char.photo}
-										alt={char.name}
-									/>
-								);
-							})}
-						</div>
-					</div>
 				</Link>
+				<div className='levelInfo'>
+					<h3>{item.id}</h3>
+					<div className='infoCharacters'>
+						{item.characters.map((char, index) => {
+							return (
+								<img
+									key={index}
+									src={char.photoURL}
+									alt={char.name}
+								/>
+							);
+						})}
+					</div>
+				</div>
 			</div>
 		);
 	});
