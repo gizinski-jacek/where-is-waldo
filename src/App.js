@@ -18,12 +18,6 @@ const App = () => {
 	useEffect(() => {
 		localStorage.clear();
 
-		// levelsFile.forEach((level) => {
-		// 	setDoc(doc(getFirestore(), 'gameLevels', level.id), {
-		// 		...level,
-		// 	});
-		// });
-
 		(async () => {
 			try {
 				await getDocs(collection(getFirestore(), 'gameLevels')).then(
