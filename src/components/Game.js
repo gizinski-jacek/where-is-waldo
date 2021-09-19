@@ -13,7 +13,7 @@ import {
 const Game = (props) => {
 	const [gameId, setGameId] = useState();
 	const [levelData, setLevelData] = useState(props.data);
-	const [characters, setCharacters] = useState();
+	const [characters, setCharacters] = useState(props.data?.characters);
 	const [showContextMenu, setShowContextMenu] = useState(false);
 	const [clickedCoord, setClickedCoord] = useState();
 
