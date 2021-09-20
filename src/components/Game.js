@@ -12,10 +12,13 @@ import {
 
 const Game = (props) => {
 	const [gameId, setGameId] = useState();
+	const [gameStartTime, setGameStartTime] = useState();
+	const [gameTime, setGameTime] = useState(0);
+	const [gameOver, setGameOver] = useState(false);
 	const [levelData, setLevelData] = useState(props.data);
 	const [characters, setCharacters] = useState(props.data?.characters);
-	const [showContextMenu, setShowContextMenu] = useState(false);
 	const [clickedCoord, setClickedCoord] = useState();
+	const [showContextMenu, setShowContextMenu] = useState(false);
 
 	useEffect(() => {
 		if (levelData) {
@@ -25,6 +28,7 @@ const Game = (props) => {
 			}).then((docRef) => {
 				setCharacters(levelData.characters);
 				setGameId(docRef.id);
+				setGameStartTime(Date.now());
 				localStorage.setItem('currentLevel', levelData.id);
 			});
 		}
@@ -51,8 +55,28 @@ const Game = (props) => {
 	}, []);
 
 	useEffect(() => {
+		if (gameOver) {
+			console.log('GameOver. Your time: ' + gameTime + ' seconds');
+		}
+	}, [gameOver]);
+
+	useEffect(() => {
+		if (!gameOver) {
+			const timer = setInterval(() => {
+				const newTime = Number(
+					Math.floor((Date.now() - gameStartTime) / 1000)
+				);
+				setGameTime(newTime);
+			}, 1000);
+			return () => {
+				clearInterval(timer);
+			};
+		}
+	});
+
+	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
-		if (foundAll) {
+		if (foundAll && !gameOver) {
 			setDoc(
 				doc(getFirestore(), 'usersGames', gameId),
 				{
@@ -60,9 +84,29 @@ const Game = (props) => {
 				},
 				{ merge: true }
 			);
-			console.log('Game Over');
+			setGameOver(true);
+			setTimeout(() => {
+				(async () => {
+					try {
+						await getDoc(
+							doc(getFirestore(), 'usersGames', gameId)
+						).then((file) => {
+							setGameTime(
+								Math.floor(
+									file.data().gameEnd - file.data().gameStart
+								)
+							);
+						});
+					} catch (error) {
+						console.log(
+							'Error reading data from Firebase Database: ',
+							error
+						);
+					}
+				})();
+			}, 200);
 		}
-	}, [characters, gameId]);
+	}, [characters]);
 
 	const onImageClick = (e) => {
 		const { pageX, pageY, offsetX, offsetY } = e.nativeEvent;
@@ -123,6 +167,7 @@ const Game = (props) => {
 		<div className='gamePage'>
 			<div className='gameHeader'>
 				<h1>Where's Waldo</h1>
+				<h3 className='gameTime'>{gameTime}</h3>
 				<div className='headerCharacters'>
 					{headerDisplayCharacters}
 				</div>
