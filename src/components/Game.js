@@ -32,7 +32,7 @@ const Game = (props) => {
 				localStorage.setItem('currentLevel', levelData.id);
 			});
 		}
-	}, [levelData]);
+	}, []);
 
 	// useEffect(() => {
 	// 	if (!levelData) {
