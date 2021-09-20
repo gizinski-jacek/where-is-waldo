@@ -5,7 +5,6 @@ import {
 	collection,
 	getFirestore,
 	serverTimestamp,
-	// getDoc,
 	doc,
 	setDoc,
 } from 'firebase/firestore';
