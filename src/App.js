@@ -1,37 +1,35 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './App.css';
+import { getDocs, collection, getFirestore } from 'firebase/firestore';
+import app from './firebase';
 import Home from './components/Home';
 import Game from './components/Game';
-import app from './firebase';
-// import levelsFile from './components/levels';
-import { getDocs, collection, getFirestore } from 'firebase/firestore';
 import Timer from './components/Timer';
 
 const App = () => {
 	const [allLevelsData, setAllLevelsData] = useState([]);
 	const [levelData, setLevelData] = useState();
-	const [timer, setTimer] = useState(0);
-	const [startDate, setStartDate] = useState();
+	const [timeElapsed, setTimeElapsed] = useState(0);
+	const [gameStartTime, setGameStartTime] = useState();
 	const [stopTimer, setStopTimer] = useState(false);
 
 	const goToLevel = (id) => {
 		setLevelData(allLevelsData.find((level) => level.id === id));
-		setTimer(0);
-		setStartDate(Date.now());
+		setTimeElapsed(0);
+		setGameStartTime(Date.now());
 		setStopTimer(false);
 	};
 
-	const fnStopTimer = () => {
+	const fnSetStopTimer = () => {
 		setStopTimer(true);
 	};
 
-	const fnSetTimer = (time) => {
-		setTimer(time);
+	const fnSetTimeElapsed = (time) => {
+		setTimeElapsed(time);
 	};
 
 	useEffect(() => {
-		localStorage.clear();
 		(async () => {
 			try {
 				await getDocs(collection(getFirestore(), 'gameLevels')).then(
@@ -60,14 +58,14 @@ const App = () => {
 				</Route>
 				<Route exact path='/game'>
 					<Timer
-						stopTimer={stopTimer}
-						startTime={startDate}
-						fnSetTimer={fnSetTimer}
+						stop={stopTimer}
+						startDate={gameStartTime}
+						fnSetTime={fnSetTimeElapsed}
 					/>
 					<Game
 						data={levelData}
-						time={timer}
-						fnStopTimer={fnStopTimer}
+						time={timeElapsed}
+						fnStopTimer={fnSetStopTimer}
 					/>
 				</Route>
 			</Switch>
