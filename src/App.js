@@ -33,10 +33,10 @@ const App = () => {
 		(async () => {
 			try {
 				await getDocs(collection(getFirestore(), 'gameLevels')).then(
-					(files) => {
+					(docs) => {
 						const array = [];
-						files.forEach((file) => {
-							array.push(file.data());
+						docs.forEach((doc) => {
+							array.push(doc.data());
 						});
 						setAllLevelsData(array);
 					}
