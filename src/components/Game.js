@@ -29,30 +29,9 @@ const Game = (props) => {
 			}).then((docRef) => {
 				setCharacters(levelData.characters);
 				setGameId(docRef.id);
-				localStorage.setItem('currentLevel', levelData.id);
 			});
 		}
 	}, []);
-
-	// useEffect(() => {
-	// 	if (!levelData) {
-	// 		const currentLevel = localStorage.getItem('currentLevel');
-	// 		(async () => {
-	// 			try {
-	// 				await getDoc(
-	// 					doc(getFirestore(), 'gameLevels', currentLevel)
-	// 				).then((file) => {
-	// 					setLevelData(file.data());
-	// 				});
-	// 			} catch (error) {
-	// 				console.log(
-	// 					'Error reading data from Firebase Database: ',
-	// 					error
-	// 				);
-	// 			}
-	// 		})();
-	// 	}
-	// }, []);
 
 	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
@@ -140,7 +119,9 @@ const Game = (props) => {
 				<div className='gamePage'>
 					<div className='gameHeader'>
 						<h1>Where's Waldo</h1>
-						<h3 className='gameTime'>{time}</h3>
+						<h3 className='gameTime'>
+							{new Date(time * 1000).toISOString().substr(11, 8)}
+						</h3>
 						<div className='headerCharacters'>
 							{headerDisplayCharacters}
 						</div>
