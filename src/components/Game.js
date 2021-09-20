@@ -39,6 +39,7 @@ const Game = (props) => {
 				doc(getFirestore(), 'usersGames', gameId),
 				{
 					gameEnd: serverTimestamp(),
+					timeElapsed: time,
 				},
 				{ merge: true }
 			);
