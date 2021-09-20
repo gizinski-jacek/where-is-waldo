@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import Leaderboard from './Leaderboard';
 
 const Home = (props) => {
 	const { allLevelsData, goToLevel } = props;
+
+	const [showLeaderboard, setShowLeaderboard] = useState('none');
 
 	const display = allLevelsData.map((item) => {
 		return (
@@ -31,12 +35,33 @@ const Home = (props) => {
 		);
 	});
 
+	const toggleShowLeaderboard = (e) => {
+		if (e.target.className === 'modalLeaderboard') {
+			setShowLeaderboard('none');
+		} else {
+			setShowLeaderboard('flex');
+		}
+	};
+
 	return (
 		<div className='home'>
 			<div className='header'>
 				<h1>Where's Waldo</h1>
+				<button
+					className='showLeaderboard'
+					onClick={toggleShowLeaderboard}
+				>
+					Leaderboard
+				</button>
 			</div>
 			<div className='allLevels'>{display}</div>
+			<div
+				className='modalLeaderboard'
+				style={{ display: showLeaderboard }}
+				onClick={toggleShowLeaderboard}
+			>
+				{showLeaderboard ? <Leaderboard /> : null}
+			</div>
 		</div>
 	);
 };
