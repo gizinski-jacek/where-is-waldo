@@ -6,18 +6,32 @@ import Game from './components/Game';
 import app from './firebase';
 // import levelsFile from './components/levels';
 import { getDocs, collection, getFirestore } from 'firebase/firestore';
+import Timer from './components/Timer';
 
 const App = () => {
 	const [allLevelsData, setAllLevelsData] = useState([]);
 	const [levelData, setLevelData] = useState();
+	const [timer, setTimer] = useState(0);
+	const [startDate, setStartDate] = useState();
+	const [stopTimer, setStopTimer] = useState(false);
 
 	const goToLevel = (id) => {
 		setLevelData(allLevelsData.find((level) => level.id === id));
+		setTimer(0);
+		setStartDate(Date.now());
+		setStopTimer(false);
+	};
+
+	const fnStopTimer = () => {
+		setStopTimer(true);
+	};
+
+	const fnSetTimer = (time) => {
+		setTimer(time);
 	};
 
 	useEffect(() => {
 		localStorage.clear();
-
 		(async () => {
 			try {
 				await getDocs(collection(getFirestore(), 'gameLevels')).then(
@@ -45,7 +59,16 @@ const App = () => {
 					<Home allLevelsData={allLevelsData} goToLevel={goToLevel} />
 				</Route>
 				<Route exact path='/game'>
-					<Game data={levelData} />
+					<Timer
+						stopTimer={stopTimer}
+						startTime={startDate}
+						fnSetTimer={fnSetTimer}
+					/>
+					<Game
+						data={levelData}
+						time={timer}
+						fnStopTimer={fnStopTimer}
+					/>
 				</Route>
 				<Redirect to='/' />
 			</Switch>
