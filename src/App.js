@@ -1,4 +1,4 @@
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import './App.css';
 import Home from './components/Home';
@@ -70,7 +70,6 @@ const App = () => {
 						fnStopTimer={fnStopTimer}
 					/>
 				</Route>
-				<Redirect to='/' />
 			</Switch>
 		</BrowserRouter>
 	);
