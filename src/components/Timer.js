@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 
 const Timer = (props) => {
-	const { stopTimer, startTime, fnSetTimer } = props;
+	const { stop, startDate, fnSetTime } = props;
 	useEffect(() => {
-		if (!stopTimer) {
+		if (!stop) {
 			const timer = setInterval(() => {
-				const newTime = Math.floor((Date.now() - startTime) / 1000);
-				fnSetTimer(newTime);
+				const newTime = Math.floor((Date.now() - startDate) / 1000);
+				fnSetTime(newTime);
 			}, 1000);
 			return () => {
 				clearInterval(timer);
