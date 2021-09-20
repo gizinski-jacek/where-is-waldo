@@ -11,9 +11,11 @@ import {
 } from 'firebase/firestore';
 
 const Game = (props) => {
+	const { data, time, fnStopTimer } = props;
 	const [gameId, setGameId] = useState();
-	const [levelData, setLevelData] = useState(props.data);
-	const [characters, setCharacters] = useState(props.data?.characters);
+	const [gameOver, setGameOver] = useState(false);
+	const [levelData, setLevelData] = useState(data);
+	const [characters, setCharacters] = useState(data?.characters);
 	const [clickedCoord, setClickedCoord] = useState();
 	const [showContextMenu, setShowContextMenu] = useState(false);
 
@@ -52,7 +54,7 @@ const Game = (props) => {
 
 	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
-		if (foundAll) {
+		if (foundAll && !gameOver) {
 			setDoc(
 				doc(getFirestore(), 'usersGames', gameId),
 				{
@@ -60,9 +62,16 @@ const Game = (props) => {
 				},
 				{ merge: true }
 			);
-			console.log('Game Over');
+			setGameOver(true);
 		}
-	}, [characters, gameId]);
+	}, [characters]);
+
+	useEffect(() => {
+		if (gameOver) {
+			fnStopTimer();
+			console.log('GameOver. Your time: ' + time + ' seconds');
+		}
+	}, [gameOver]);
 
 	const onImageClick = (e) => {
 		const { pageX, pageY, offsetX, offsetY } = e.nativeEvent;
@@ -123,6 +132,7 @@ const Game = (props) => {
 		<div className='gamePage'>
 			<div className='gameHeader'>
 				<h1>Where's Waldo</h1>
+				<h3 className='gameTime'>{time}</h3>
 				<div className='headerCharacters'>
 					{headerDisplayCharacters}
 				</div>
