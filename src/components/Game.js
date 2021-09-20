@@ -1,17 +1,19 @@
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
 	addDoc,
 	collection,
 	getFirestore,
 	serverTimestamp,
-	getDoc,
+	// getDoc,
 	doc,
 	setDoc,
 } from 'firebase/firestore';
 
 const Game = (props) => {
+	const history = useHistory();
 	const { data, time, fnStopTimer } = props;
+
 	const [gameId, setGameId] = useState();
 	const [gameOver, setGameOver] = useState(false);
 	const [levelData, setLevelData] = useState(data);
@@ -32,29 +34,29 @@ const Game = (props) => {
 		}
 	}, [levelData]);
 
-	useEffect(() => {
-		if (!levelData) {
-			const currentLevel = localStorage.getItem('currentLevel');
-			(async () => {
-				try {
-					await getDoc(
-						doc(getFirestore(), 'gameLevels', currentLevel)
-					).then((file) => {
-						setLevelData(file.data());
-					});
-				} catch (error) {
-					console.log(
-						'Error reading data from Firebase Database: ',
-						error
-					);
-				}
-			})();
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if (!levelData) {
+	// 		const currentLevel = localStorage.getItem('currentLevel');
+	// 		(async () => {
+	// 			try {
+	// 				await getDoc(
+	// 					doc(getFirestore(), 'gameLevels', currentLevel)
+	// 				).then((file) => {
+	// 					setLevelData(file.data());
+	// 				});
+	// 			} catch (error) {
+	// 				console.log(
+	// 					'Error reading data from Firebase Database: ',
+	// 					error
+	// 				);
+	// 			}
+	// 		})();
+	// 	}
+	// }, []);
 
 	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
-		if (foundAll && !gameOver) {
+		if (foundAll) {
 			setDoc(
 				doc(getFirestore(), 'usersGames', gameId),
 				{
@@ -128,32 +130,44 @@ const Game = (props) => {
 		);
 	});
 
+	const noDataRedirect = () => {
+		history.push('/');
+	};
+
 	return (
-		<div className='gamePage'>
-			<div className='gameHeader'>
-				<h1>Where's Waldo</h1>
-				<h3 className='gameTime'>{time}</h3>
-				<div className='headerCharacters'>
-					{headerDisplayCharacters}
+		<>
+			{levelData ? (
+				<div className='gamePage'>
+					<div className='gameHeader'>
+						<h1>Where's Waldo</h1>
+						<h3 className='gameTime'>{time}</h3>
+						<div className='headerCharacters'>
+							{headerDisplayCharacters}
+						</div>
+						<Link to='/'>
+							<button className='homeLink'>Home Page</button>
+						</Link>
+					</div>
+					<div className='game' onClick={onImageClick}>
+						<div
+							className='contextMenu'
+							style={{
+								display: showContextMenu ? 'block' : 'none',
+							}}
+						>
+							{contectMenuCharacters}
+						</div>
+						<img
+							className='gameLevel'
+							src={levelData.pictureURL}
+							alt={levelData.levelId}
+						/>
+					</div>
 				</div>
-				<Link to='/'>
-					<button className='homeLink'>Home Page</button>
-				</Link>
-			</div>
-			<div className='game' onClick={onImageClick}>
-				<div
-					className='contextMenu'
-					style={{ display: showContextMenu ? 'block' : 'none' }}
-				>
-					{contectMenuCharacters}
-				</div>
-				<img
-					className='gameLevel'
-					src={levelData?.pictureURL}
-					alt={levelData?.levelId}
-				/>
-			</div>
-		</div>
+			) : (
+				noDataRedirect()
+			)}
+		</>
 	);
 };
 
