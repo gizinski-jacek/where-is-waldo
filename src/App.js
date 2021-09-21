@@ -10,13 +10,13 @@ import Timer from './components/Timer';
 const App = () => {
 	const [allLevelsData, setAllLevelsData] = useState([]);
 	const [levelData, setLevelData] = useState();
-	const [timeElapsed, setTimeElapsed] = useState(0);
+	const [gameTime, setGameTime] = useState(0);
 	const [gameStartTime, setGameStartTime] = useState();
 	const [stopTimer, setStopTimer] = useState(false);
 
 	const goToLevel = (id) => {
 		setLevelData(allLevelsData.find((level) => level.id === id));
-		setTimeElapsed(0);
+		setGameTime(0);
 		setGameStartTime(Date.now());
 		setStopTimer(false);
 	};
@@ -25,8 +25,8 @@ const App = () => {
 		setStopTimer(true);
 	};
 
-	const fnSetTimeElapsed = (time) => {
-		setTimeElapsed(time);
+	const fnSetGameTime = (time) => {
+		setGameTime(time);
 	};
 
 	useEffect(() => {
@@ -60,11 +60,11 @@ const App = () => {
 					<Timer
 						stop={stopTimer}
 						startDate={gameStartTime}
-						fnSetTime={fnSetTimeElapsed}
+						fnSetTime={fnSetGameTime}
 					/>
 					<Game
 						data={levelData}
-						time={timeElapsed}
+						time={gameTime}
 						fnStopTimer={fnSetStopTimer}
 					/>
 				</Route>
