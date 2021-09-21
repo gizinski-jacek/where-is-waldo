@@ -9,17 +9,17 @@ const Home = (props) => {
 
 	const display = allLevelsData.map((item) => {
 		return (
-			<div key={item.id} className='preview'>
+			<div key={item.id} className='levelCard'>
 				<Link to='game' onClick={() => goToLevel(item.id)}>
 					<img
-						className='levelPreview'
+						className='levelPicture'
 						src={item.pictureURL}
 						alt={item.id}
 					/>
 				</Link>
 				<div className='levelInfo'>
 					<h3>{item.id}</h3>
-					<div className='infoCharacters'>
+					<div className='levelCharacters'>
 						{item.characters.map((char, index) => {
 							return (
 								<img
