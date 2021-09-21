@@ -19,6 +19,8 @@ const Game = (props) => {
 	const [characters, setCharacters] = useState(data?.characters);
 	const [clickedCoord, setClickedCoord] = useState();
 	const [showContextMenu, setShowContextMenu] = useState(false);
+	const [showUserWin, setShowUserWin] = useState(false);
+	const [playerName, setPlayerName] = useState();
 
 	useEffect(() => {
 		if (levelData) {
@@ -35,11 +37,12 @@ const Game = (props) => {
 	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
 		if (foundAll) {
+			fnStopTimer();
 			setDoc(
 				doc(getFirestore(), 'usersGames', gameId),
 				{
 					gameEnd: serverTimestamp(),
-					timeElapsed: time,
+					gameTime: time,
 				},
 				{ merge: true }
 			);
@@ -49,10 +52,34 @@ const Game = (props) => {
 
 	useEffect(() => {
 		if (gameOver) {
-			fnStopTimer();
-			console.log('GameOver. Your time: ' + time + ' seconds');
+			setShowUserWin(true);
 		}
 	}, [gameOver]);
+
+	useEffect(() => {
+		if (gameOver && !showUserWin) {
+			setDoc(
+				doc(getFirestore(), 'usersGames', gameId),
+				{
+					playerName: playerName,
+				},
+				{ merge: true }
+			);
+		}
+	}, [playerName, showUserWin]);
+
+	const handleChange = (e) => {
+		const { value } = e.target;
+		setPlayerName(value);
+	};
+
+	const submitScore = (e) => {
+		e.preventDefault();
+		setShowUserWin(false);
+		if (!playerName) {
+			setPlayerName('Anonymous');
+		}
+	};
 
 	const onImageClick = (e) => {
 		const { pageX, pageY, offsetX, offsetY } = e.nativeEvent;
@@ -74,7 +101,7 @@ const Game = (props) => {
 			isCoordWithinRange(clickedCoord.X, clickedCharacter.coords.X) &&
 			isCoordWithinRange(clickedCoord.Y, clickedCharacter.coords.Y);
 		if (result) {
-			const newCharState = levelData.characters.map((char) => {
+			const newCharState = characters.map((char) => {
 				return char.name === id ? { ...char, found: true } : char;
 			});
 			setCharacters(newCharState);
@@ -101,7 +128,9 @@ const Game = (props) => {
 			<div
 				key={index}
 				className={char.found ? 'found' : 'notFound'}
-				onClick={() => onContextMenuClick(char.name)}
+				onClick={
+					char.found ? null : () => onContextMenuClick(char.name)
+				}
 			>
 				<img src={char.photoURL} alt={char.name} />
 				<h4>{char.name}</h4>
@@ -112,7 +141,7 @@ const Game = (props) => {
 	const noDataRedirect = () => {
 		history.push('/');
 	};
-
+	// console.log(time);
 	return (
 		<>
 			{levelData ? (
@@ -120,7 +149,9 @@ const Game = (props) => {
 					<div className='gameHeader'>
 						<h1>Where's Waldo</h1>
 						<h3 className='gameTime'>
-							{new Date(time * 1000).toISOString().substr(11, 8)}
+							{new Date(time).toISOString().substr(14, 7)}
+							{/* Version without milliseconds. */}
+							{/* {new Date(time * 1000).toISOString().substr(14, 5)} */}
 						</h3>
 						<div className='headerCharacters'>
 							{headerDisplayCharacters}
@@ -148,6 +179,31 @@ const Game = (props) => {
 			) : (
 				noDataRedirect()
 			)}
+			{showUserWin ? (
+				<div className='modalUserWin'>
+					<div className='userWin'>
+						<p>You found them all!</p>
+						<p>You time was: </p>
+						<p style={{ color: 'rgb(0, 200, 0)' }}>
+							{new Date(time).toISOString().substr(14, 7)}
+							{/* Version without milliseconds */}
+							{/* {new Date(time * 1000).toISOString().substr(14, 5)} */}
+						</p>
+						<p>What is your name?</p>
+						<input
+							id='usernameInput'
+							type='text'
+							maxLength='12'
+							placeholder='Anonymous'
+							autoFocus
+							onChange={handleChange}
+						/>
+						<button className='submitScore' onClick={submitScore}>
+							Submit Score
+						</button>
+					</div>
+				</div>
+			) : null}
 		</>
 	);
 };
