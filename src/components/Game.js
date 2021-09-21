@@ -83,7 +83,7 @@ const Game = (props) => {
 
 	const onImageClick = (e) => {
 		const { pageX, pageY, offsetX, offsetY } = e.nativeEvent;
-		if (e.target.className === 'gameLevel') {
+		if (e.target.className === 'gameLevelPicture') {
 			setClickedCoord({ X: offsetX, Y: offsetY });
 		}
 		if (!showContextMenu) {
@@ -170,7 +170,7 @@ const Game = (props) => {
 							{contectMenuCharacters}
 						</div>
 						<img
-							className='gameLevel'
+							className='gameLevelPicture'
 							src={levelData.pictureURL}
 							alt={levelData.levelId}
 						/>
