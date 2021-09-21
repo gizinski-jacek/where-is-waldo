@@ -7,14 +7,8 @@
 #root {
 	height: 100vh;
 	width: 100%;
-	box-sizing: border-box;
 	background-color: rgb(225, 200, 175);
 	user-select: none;
-}
-
-.header {
-	text-align: center;
-	background-color: rgb(225, 0, 0);
 }
 
 h1 {
@@ -25,13 +19,19 @@ h1 {
 	padding: 1rem;
 }
 
-.homeLink {
+.homeLink,
+.showLeaderboard {
 	font-size: 1.5rem;
 	padding: 3px 10px;
 	font-weight: 600;
 	border: 2px solid rgb(0, 0, 0);
-	background-color: rgb(0, 225, 0);
+	background-color: rgb(0, 200, 0);
 	border-radius: 10px;
+}
+
+.homeLink:hover,
+.showLeaderboard:hover {
+	filter: brightness(125%);
 }
 
 a {
@@ -51,8 +51,12 @@ a {
 	margin: 1rem 2rem;
 	padding: 1rem;
 	border: 2px solid rgb(0, 0, 0);
-	background-color: rgb(255, 175, 100);
+	background-color: rgb(255, 150, 50);
 	border-radius: 30px;
+}
+
+.preview:hover {
+	filter: brightness(125%);
 }
 
 .levelPreview {
@@ -117,11 +121,13 @@ h4 {
 	margin: 2rem auto 0 auto;
 }
 
+.header,
 .gameHeader {
 	height: 75px;
 	display: flex;
 	position: sticky;
 	top: 0;
+	padding: 0 10rem;
 	justify-content: space-evenly;
 	align-items: center;
 	background-color: rgb(200, 0, 0);
@@ -170,4 +176,159 @@ h4 {
 	font-weight: 600;
 	color: rgb(100, 0, 255);
 	background-color: rgb(200, 200, 0);
+}
+
+.modalLeaderboard,
+.leaderboard {
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	z-index: 1;
+}
+
+.modalLeaderboard {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.leaderboard {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	background-color: rgb(75, 75, 75);
+	border-radius: 10px;
+	border: 4px solid rgb(255, 255, 255);
+}
+
+.leaderboardControls {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.leaderboardControls button {
+	background-color: rgb(0, 200, 0);
+	font-size: 1rem;
+	padding: 0.25rem 1rem;
+	margin: 1rem;
+	border: 2px solid rgb(0, 0, 0);
+	color: rgb(0, 0, 0);
+	font-weight: 600;
+	font-size: 1.25rem;
+	border-radius: 5px;
+}
+
+.leaderboardControls button:hover {
+	filter: brightness(125%);
+}
+
+table {
+	table-layout: fixed;
+	display: flex;
+	flex-direction: column;
+	height: 645px;
+	width: 665px;
+}
+
+th {
+	text-align: left;
+	color: rgb(0, 255, 255);
+	margin: 0 0.5rem;
+	font-size: 1.25rem;
+}
+
+td {
+	margin: 0 0.5rem;
+}
+
+tr {
+	color: rgb(0, 0, 0);
+	border-radius: 5px;
+	font-weight: 600;
+	display: flex;
+	margin: 0.25rem 1rem;
+	padding: 0.5rem;
+	background-color: rgb(125, 125, 125);
+}
+
+tr.no1 {
+	color: rgb(255, 255, 0);
+}
+
+tr.no2 {
+	color: rgb(255, 255, 255);
+}
+
+tr.no3 {
+	color: rgb(255, 150, 0);
+}
+
+.playerRank {
+	width: 75px;
+}
+
+.playerTime {
+	width: 100px;
+}
+
+.playerName {
+	width: 200px;
+}
+
+.playerDatePlayed {
+	width: 175px;
+}
+
+.modalUserWin {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+.userWin {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	padding: 1rem;
+	width: 300px;
+	background-color: rgb(255, 255, 255);
+	border: 2px solid rgb(0, 0, 0);
+}
+
+input {
+	width: 240px;
+	font-size: 1.25rem;
+	margin: 1rem;
+	text-align: center;
+}
+
+p {
+	font-size: 1.25rem;
+	padding: 0.5rem;
+}
+
+.submitScore {
+	font-size: 1.25rem;
+	padding: 3px 10px;
+	border: 1px solid rgb(0, 0, 0);
+	background-color: rgb(200, 200, 200);
+	border-radius: 5px;
+	margin: 0.5rem;
+	padding: 0 1rem;
 }
