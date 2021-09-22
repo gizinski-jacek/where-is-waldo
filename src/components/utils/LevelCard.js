@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import CharacterPic from './CharacterPic';
 
 const LevelCard = (props) => {
 	const { id, pictureURL, characters } = props.data;
@@ -13,13 +14,7 @@ const LevelCard = (props) => {
 				<h3>{id}</h3>
 				<div className='levelCharacters'>
 					{characters.map((char, index) => {
-						return (
-							<img
-								key={index}
-								src={char.photoURL}
-								alt={char.name}
-							/>
-						);
+						return <CharacterPic key={index} data={char} />;
 					})}
 				</div>
 			</div>
