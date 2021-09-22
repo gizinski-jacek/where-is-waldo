@@ -51,14 +51,14 @@ const Leaderboard = () => {
 		console.log(entry.gameEnd);
 		return (
 			<tr key={index} className={`player  no${index + 1}`}>
-				<td className='playerRank'>{'#' + (index + 1)}</td>
-				<td className='playerName'>{entry.playerName}</td>
-				<td className='playerTime'>
+				<td className='rankColumn'>{'#' + (index + 1)}</td>
+				<td className='nameColumn'>{entry.playerName}</td>
+				<td className='timeColumn'>
 					{new Date(entry.gameTime).toISOString().substr(14, 7)}
 					{/* Version without milliseconds */}
 					{/* {new Date(entry.gameTime).toISOString().substr(14, 5)} */}
 				</td>
-				<td className='playerDatePlayed'>
+				<td className='datePlayedColumn'>
 					{new Date(entry.gameStart.seconds * 1000)
 						.toLocaleString()
 						.substr(0, 17)}
@@ -86,10 +86,10 @@ const Leaderboard = () => {
 			<table>
 				<tbody>
 					<tr>
-						<th style={{ width: '75px' }}>Place</th>
-						<th style={{ width: '200px' }}>Name</th>
-						<th style={{ width: '100px' }}>Time</th>
-						<th style={{ width: '175px' }}>Date Played</th>
+						<th className='rankColumn'>Place</th>
+						<th className='nameColumn'>Name</th>
+						<th className='timeColumn'>Time</th>
+						<th className='datePlayedColumn'>Date Played</th>
 					</tr>
 					{display}
 				</tbody>

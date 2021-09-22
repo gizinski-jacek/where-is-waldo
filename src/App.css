@@ -183,19 +183,19 @@ tr.no3 {
 	color: rgb(255, 150, 0);
 }
 
-.playerRank {
+.rankColumn {
 	width: 75px;
 }
 
-.playerTime {
+.timeColumn {
 	width: 100px;
 }
 
-.playerName {
+.nameColumn {
 	width: 200px;
 }
 
-.playerDatePlayed {
+.datePlayedColumn {
 	width: 175px;
 }
 
