@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import Leaderboard from './Leaderboard';
 import Button from './Button';
