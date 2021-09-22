@@ -8,6 +8,9 @@ import {
 	doc,
 	setDoc,
 } from 'firebase/firestore';
+import LevelFinished from './LevelFinished';
+import Button from './Button';
+import CharacterPic from './utils/CharacterPic';
 
 const Game = (props) => {
 	const history = useHistory();
@@ -17,10 +20,11 @@ const Game = (props) => {
 	const [gameOver, setGameOver] = useState(false);
 	const [levelData, setLevelData] = useState(data);
 	const [characters, setCharacters] = useState(data?.characters);
-	const [clickedCoord, setClickedCoord] = useState();
+	const [clickedCoord, setClickedCoord] = useState({});
 	const [showContextMenu, setShowContextMenu] = useState(false);
-	const [showUserWin, setShowUserWin] = useState(false);
-	const [playerName, setPlayerName] = useState();
+	const [contextMenuCoords, setContextMenuCoords] = useState({});
+	const [userWon, setuserWon] = useState(false);
+	const [playerName, setPlayerName] = useState('Anonymous');
 
 	useEffect(() => {
 		if (levelData) {
@@ -52,12 +56,12 @@ const Game = (props) => {
 
 	useEffect(() => {
 		if (gameOver) {
-			setShowUserWin(true);
+			setuserWon(true);
 		}
 	}, [gameOver]);
 
 	useEffect(() => {
-		if (gameOver && !showUserWin) {
+		if (gameOver && !userWon) {
 			setDoc(
 				doc(getFirestore(), 'usersGames', gameId),
 				{
@@ -66,7 +70,7 @@ const Game = (props) => {
 				{ merge: true }
 			);
 		}
-	}, [playerName, showUserWin]);
+	}, [playerName, userWon]);
 
 	const handleChange = (e) => {
 		const { value } = e.target;
@@ -75,7 +79,7 @@ const Game = (props) => {
 
 	const submitScore = (e) => {
 		e.preventDefault();
-		setShowUserWin(false);
+		setuserWon(false);
 		if (!playerName) {
 			setPlayerName('Anonymous');
 		}
@@ -87,8 +91,7 @@ const Game = (props) => {
 			setClickedCoord({ X: offsetX, Y: offsetY });
 		}
 		if (!showContextMenu) {
-			document.querySelector('.contextMenu').style.top = pageY + 'px';
-			document.querySelector('.contextMenu').style.left = pageX + 'px';
+			setContextMenuCoords({ X: pageX + 'px', Y: pageY + 'px' });
 		}
 		setShowContextMenu((prevState) => !prevState);
 	};
@@ -113,14 +116,7 @@ const Game = (props) => {
 	};
 
 	const headerDisplayCharacters = characters?.map((char, index) => {
-		return (
-			<img
-				key={index}
-				src={char.photoURL}
-				alt={char.name}
-				className={char.found ? 'found' : 'notFound'}
-			/>
-		);
+		return <CharacterPic key={index} data={char} />;
 	});
 
 	const contectMenuCharacters = characters?.map((char, index) => {
@@ -132,7 +128,7 @@ const Game = (props) => {
 					char.found ? null : () => onContextMenuClick(char.name)
 				}
 			>
-				<img src={char.photoURL} alt={char.name} />
+				<CharacterPic key={index} data={char} />
 				<h4>{char.name}</h4>
 			</div>
 		);
@@ -141,12 +137,12 @@ const Game = (props) => {
 	const noDataRedirect = () => {
 		history.push('/');
 	};
-	// console.log(time);
+
 	return (
 		<>
 			{levelData ? (
 				<div className='gamePage'>
-					<div className='gameHeader'>
+					<header className='gameHeader'>
 						<h1>Where's Waldo</h1>
 						<h3 className='gameTime'>
 							{new Date(time).toISOString().substr(14, 7)}
@@ -157,52 +153,37 @@ const Game = (props) => {
 							{headerDisplayCharacters}
 						</div>
 						<Link to='/'>
-							<button className='homeLink'>Home Page</button>
+							<Button text={'Home Page'} />
 						</Link>
-					</div>
-					<div className='game' onClick={onImageClick}>
-						<div
-							className='contextMenu'
-							style={{
-								display: showContextMenu ? 'block' : 'none',
-							}}
-						>
-							{contectMenuCharacters}
-						</div>
+					</header>
+					<main className='game' onClick={onImageClick}>
 						<img
 							className='gameLevelPicture'
 							src={levelData.pictureURL}
 							alt={levelData.levelId}
 						/>
-					</div>
+						<div
+							className='contextMenu'
+							style={{
+								display: showContextMenu ? 'block' : 'none',
+								top: contextMenuCoords.Y,
+								left: contextMenuCoords.X,
+							}}
+						>
+							{contectMenuCharacters}
+						</div>
+					</main>
 				</div>
 			) : (
 				noDataRedirect()
 			)}
-			{showUserWin ? (
-				<div className='modalUserWin'>
-					<div className='userWin'>
-						<p>You found them all!</p>
-						<p>You time was: </p>
-						<p style={{ color: 'rgb(0, 200, 0)' }}>
-							{new Date(time).toISOString().substr(14, 7)}
-							{/* Version without milliseconds */}
-							{/* {new Date(time * 1000).toISOString().substr(14, 5)} */}
-						</p>
-						<p>What is your name?</p>
-						<input
-							id='usernameInput'
-							type='text'
-							maxLength='12'
-							placeholder='Anonymous'
-							autoFocus
-							onChange={handleChange}
-						/>
-						<button className='submitScore' onClick={submitScore}>
-							Submit Score
-						</button>
-					</div>
-				</div>
+			{userWon ? (
+				<LevelFinished
+					time={time}
+					name={playerName}
+					handleChange={handleChange}
+					submitScore={submitScore}
+				/>
 			) : null}
 		</>
 	);
