@@ -7,14 +7,10 @@ const TableData = (props) => {
 			<td className='rankColumn'>{'#' + (index + 1)}</td>
 			<td className='nameColumn'>{playerName}</td>
 			<td className='timeColumn'>
-				{new Date(gameTime).toISOString().substr(14, 7)}
-				{/* Version without milliseconds */}
-				{/* {new Date(entry.gameTime).toISOString().substr(14, 5)} */}
+				{new Date(gameTime).toISOString().substring(14, 21)}
 			</td>
 			<td className='datePlayedColumn'>
-				{new Date(gameStart.seconds * 1000)
-					.toLocaleString()
-					.substr(0, 17)}
+				{new Date(gameStart.seconds * 1000).toLocaleString().substring(0, 17)}
 			</td>
 		</tr>
 	);

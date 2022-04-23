@@ -9,9 +9,7 @@ const LevelFinished = (props) => {
 				<p>You found them all!</p>
 				<p>You time was: </p>
 				<p style={{ color: 'rgb(0, 200, 0)' }}>
-					{new Date(time).toISOString().substr(14, 7)}
-					{/* Version without milliseconds */}
-					{/* {new Date(time * 1000).toISOString().substr(14, 5)} */}
+					{new Date(time).toISOString().substring(14, 21)}
 				</p>
 				<p>What is your name?</p>
 				<input
