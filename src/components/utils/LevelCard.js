@@ -6,10 +6,8 @@ const LevelCard = (props) => {
 	const { handler } = props;
 
 	return (
-		<div className='levelCard'>
-			<Link to='game' onClick={() => handler(id)}>
-				<img className='levelPicture' src={pictureURL} alt={id} />
-			</Link>
+		<Link to='game' className='levelCard' onClick={() => handler(id)}>
+			<img className='levelPicture' src={pictureURL} alt={id} />
 			<div className='levelInfo'>
 				<h3>{id}</h3>
 				<div className='levelCharacters'>
@@ -18,7 +16,7 @@ const LevelCard = (props) => {
 					})}
 				</div>
 			</div>
-		</div>
+		</Link>
 	);
 };
 export default LevelCard;
