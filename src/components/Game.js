@@ -36,7 +36,7 @@ const Game = (props) => {
 				setGameId(docRef.id);
 			});
 		}
-	}, []);
+	}, [levelData]);
 
 	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
@@ -124,9 +124,7 @@ const Game = (props) => {
 			<div
 				key={index}
 				className={char.found ? 'found' : 'notFound'}
-				onClick={
-					char.found ? null : () => onContextMenuClick(char.name)
-				}
+				onClick={char.found ? null : () => onContextMenuClick(char.name)}
 			>
 				<CharacterPic key={index} data={char} />
 				<h4>{char.name}</h4>
@@ -145,13 +143,9 @@ const Game = (props) => {
 					<header className='gameHeader'>
 						<h1>Where's Waldo</h1>
 						<h3 className='gameTime'>
-							{new Date(time).toISOString().substr(14, 7)}
-							{/* Version without milliseconds. */}
-							{/* {new Date(time * 1000).toISOString().substr(14, 5)} */}
+							{new Date(time).toISOString().substring(14, 21)}
 						</h3>
-						<div className='headerCharacters'>
-							{headerDisplayCharacters}
-						</div>
+						<div className='headerCharacters'>{headerDisplayCharacters}</div>
 						<Link to='/'>
 							<Button text={'Home Page'} />
 						</Link>
