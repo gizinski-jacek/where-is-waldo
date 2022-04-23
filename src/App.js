@@ -32,20 +32,15 @@ const App = () => {
 	useEffect(() => {
 		(async () => {
 			try {
-				await getDocs(collection(getFirestore(), 'gameLevels')).then(
-					(docs) => {
-						const array = [];
-						docs.forEach((doc) => {
-							array.push(doc.data());
-						});
-						setAllLevelsData(array);
-					}
-				);
+				await getDocs(collection(getFirestore(), 'gameLevels')).then((docs) => {
+					const array = [];
+					docs.forEach((doc) => {
+						array.push(doc.data());
+					});
+					setAllLevelsData(array);
+				});
 			} catch (error) {
-				console.log(
-					'Error reading data from Firebase Database: ',
-					error
-				);
+				console.log('Error reading data from Firebase Database: ', error);
 			}
 		})();
 	}, []);
@@ -62,11 +57,7 @@ const App = () => {
 						startDate={gameStartTime}
 						fnSetTime={fnSetGameTime}
 					/>
-					<Game
-						data={levelData}
-						time={gameTime}
-						fnStopTimer={fnSetStopTimer}
-					/>
+					<Game data={levelData} time={gameTime} fnStopTimer={fnSetStopTimer} />
 				</Route>
 			</Switch>
 		</BrowserRouter>
