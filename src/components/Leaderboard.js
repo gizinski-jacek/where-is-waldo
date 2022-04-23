@@ -15,7 +15,7 @@ const Leaderboard = (props) => {
 	const { show, toggle } = props;
 
 	const [leaderboardData, setLeaderboardData] = useState([]);
-	const [sortByLevel, setSortByLevel] = useState();
+	const [sortByLevel, setSortByLevel] = useState('Level 1');
 
 	const fnSetSortByLevel = (e) => {
 		const { id } = e.target;
@@ -42,10 +42,7 @@ const Leaderboard = (props) => {
 						setLeaderboardData(array);
 					});
 				} catch (error) {
-					console.log(
-						'Error reading data from Firebase Database: ',
-						error
-					);
+					console.log('Error reading data from Firebase Database: ', error);
 				}
 			})();
 		}
@@ -67,21 +64,25 @@ const Leaderboard = (props) => {
 						id='Level 1'
 						func={fnSetSortByLevel}
 						text={'Level 1'}
+						isActive={sortByLevel === 'Level 1'}
 					/>
 					<Button
 						id='Level 2'
 						func={fnSetSortByLevel}
 						text={'Level 2'}
+						isActive={sortByLevel === 'Level 2'}
 					/>
 					<Button
 						id='Level 3'
 						func={fnSetSortByLevel}
 						text={'Level 3'}
+						isActive={sortByLevel === 'Level 3'}
 					/>
 					<Button
 						id='Level 4'
 						func={fnSetSortByLevel}
 						text={'Level 4'}
+						isActive={sortByLevel === 'Level 4'}
 					/>
 				</div>
 				<table>
