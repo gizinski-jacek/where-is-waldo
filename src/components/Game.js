@@ -52,7 +52,7 @@ const Game = (props) => {
 			);
 			setGameOver(true);
 		}
-	}, [characters]);
+	}, [characters, fnStopTimer, gameId, time]);
 
 	useEffect(() => {
 		if (gameOver) {
@@ -70,7 +70,7 @@ const Game = (props) => {
 				{ merge: true }
 			);
 		}
-	}, [playerName, userWon]);
+	}, [playerName, userWon, gameId, gameOver]);
 
 	const handleChange = (e) => {
 		const { value } = e.target;
