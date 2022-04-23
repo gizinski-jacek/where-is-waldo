@@ -1,10 +1,10 @@
 const Button = (props) => {
-	const { id, className, func, text } = props;
+	const { id, func, text, isActive } = props;
 
 	return (
 		<button
 			id={id ? id : null}
-			className={className ? className : null}
+			className={isActive ? 'isActive' : null}
 			onClick={func ? func : null}
 		>
 			{text}
