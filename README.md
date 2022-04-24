@@ -14,9 +14,9 @@ Where's Waldo (A Photo Tagging App)
 
 # Github & Live
 
-Github repo can be found [here](https://github.com/gizinski-jacek/where-is-waldo)
+Github repo can be found [here](https://github.com/gizinski-jacek/where-is-waldo).
 
-This repo is live on [Heroku](https://where-is-waldo-685893.herokuapp.com)
+This repo is live on [Heroku](https://where-is-waldo-685893.herokuapp.com).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
