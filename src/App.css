@@ -18,7 +18,8 @@ header {
 	top: 0;
 	height: 75px;
 	padding: 0 10rem;
-	background-color: rgb(200, 0, 0);
+	background-color: rgb(150, 0, 200);
+	white-space: nowrap;
 }
 
 h1 {
@@ -51,7 +52,7 @@ main {
 
 .levelCard {
 	padding: 1rem;
-	margin: 1rem 2rem;
+	margin: 1rem;
 	text-align: center;
 	background-color: rgb(255, 150, 50);
 	border: 2px solid rgb(0, 0, 0);
