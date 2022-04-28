@@ -6,6 +6,7 @@ import app from './firebase';
 import Home from './components/Home';
 import Game from './components/Game';
 import Timer from './components/Timer';
+import Footer from './components/Footer';
 
 const App = () => {
 	const [allLevelsData, setAllLevelsData] = useState([]);
@@ -50,6 +51,7 @@ const App = () => {
 			<Switch>
 				<Route exact path='/'>
 					<Home allLevelsData={allLevelsData} goToLevel={goToLevel} />
+					<Footer />
 				</Route>
 				<Route exact path='/game'>
 					<Timer
@@ -58,6 +60,7 @@ const App = () => {
 						fnSetTime={fnSetGameTime}
 					/>
 					<Game data={levelData} time={gameTime} fnStopTimer={fnSetStopTimer} />
+					<Footer />
 				</Route>
 			</Switch>
 		</BrowserRouter>
