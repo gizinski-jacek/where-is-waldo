@@ -10,6 +10,7 @@
 	user-select: none;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 }
 
 header {
@@ -18,7 +19,7 @@ header {
 	align-items: center;
 	position: sticky;
 	top: 0;
-	height: 75px;
+	height: 64px;
 	padding: 0 10rem;
 	background-color: rgb(150, 0, 200);
 	white-space: nowrap;
