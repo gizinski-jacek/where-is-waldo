@@ -10,7 +10,10 @@
 	user-select: none;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+}
+
+.home {
+	height: 100%;
 }
 
 header {
@@ -47,6 +50,7 @@ header button:hover {
 }
 
 main {
+	flex: 1;
 	display: grid;
 	justify-content: space-evenly;
 	grid-template-columns: repeat(2, auto);
