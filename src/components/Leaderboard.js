@@ -11,9 +11,7 @@ import {
 import Button from './Button';
 import TableData from './utils/TableData';
 
-const Leaderboard = (props) => {
-	const { show, toggle } = props;
-
+const Leaderboard = ({ show, toggle }) => {
 	const [leaderboardData, setLeaderboardData] = useState([]);
 	const [sortByLevel, setSortByLevel] = useState('Level 1');
 

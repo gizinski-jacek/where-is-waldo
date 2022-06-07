@@ -1,6 +1,4 @@
-const LevelFinished = (props) => {
-	const { time, name, handleChange, submitScore } = props;
-
+const LevelFinished = ({ time, name, handleChange, submitScore }) => {
 	const handleFocus = (event) => event.target.select();
 
 	return (

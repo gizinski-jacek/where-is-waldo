@@ -12,9 +12,8 @@ import LevelFinished from './LevelFinished';
 import Button from './Button';
 import CharacterPic from './utils/CharacterPic';
 
-const Game = (props) => {
+const Game = ({ data, gameTime, stopTimer }) => {
 	const history = useHistory();
-	const { data, time, fnStopTimer } = props;
 
 	const [gameId, setGameId] = useState();
 	const [gameOver, setGameOver] = useState(false);
@@ -41,18 +40,18 @@ const Game = (props) => {
 	useEffect(() => {
 		const foundAll = characters?.every((char) => char.found === true);
 		if (foundAll) {
-			fnStopTimer();
+			stopTimer();
 			setDoc(
 				doc(getFirestore(), 'usersGames', gameId),
 				{
 					gameEnd: serverTimestamp(),
-					gameTime: time,
+					gameTime: gameTime,
 				},
 				{ merge: true }
 			);
 			setGameOver(true);
 		}
-	}, [characters, fnStopTimer, gameId, time]);
+	}, [characters, stopTimer, gameId, gameTime]);
 
 	useEffect(() => {
 		if (gameOver) {
@@ -143,7 +142,7 @@ const Game = (props) => {
 					<header className='gameHeader'>
 						<h1>Where's Waldo</h1>
 						<h3 className='gameTime'>
-							{new Date(time).toISOString().substring(14, 21)}
+							{new Date(gameTime).toISOString().substring(14, 21)}
 						</h3>
 						<div className='headerCharacters'>{headerDisplayCharacters}</div>
 						<Link to='/'>
@@ -173,7 +172,7 @@ const Game = (props) => {
 			)}
 			{userWon ? (
 				<LevelFinished
-					time={time}
+					time={gameTime}
 					name={playerName}
 					handleChange={handleChange}
 					submitScore={submitScore}

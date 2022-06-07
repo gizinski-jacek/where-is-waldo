@@ -1,12 +1,6 @@
-const CharacterPic = (props) => {
-	const { photoURL, name, found } = props.data;
-
+const CharacterPic = ({ photoURL, name, found }) => {
 	return (
-		<img
-			src={photoURL}
-			alt={name}
-			className={found ? 'found' : 'notFound'}
-		/>
+		<img src={photoURL} alt={name} className={found ? 'found' : 'notFound'} />
 	);
 };
 

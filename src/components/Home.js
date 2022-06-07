@@ -3,12 +3,10 @@ import Leaderboard from './Leaderboard';
 import Button from './Button';
 import LevelCard from './utils/LevelCard';
 
-const Home = (props) => {
-	const { allLevelsData, goToLevel } = props;
-
+const Home = ({ allLevelsData, goToLevel }) => {
 	const [showLeaderboard, setShowLeaderboard] = useState('none');
 
-	const toggleShowLeaderboard = (e) => {
+	const toggleLeaderboard = (e) => {
 		if (e.target.className === 'modalLeaderboard') {
 			setShowLeaderboard('none');
 		} else {
@@ -17,21 +15,18 @@ const Home = (props) => {
 	};
 
 	const mainContent = allLevelsData.map((item) => {
-		return <LevelCard key={item.id} data={item} handler={goToLevel} />;
+		return <LevelCard key={item.id} data={item} goToLevel={goToLevel} />;
 	});
 
 	return (
 		<div className='home'>
 			<header className='header'>
 				<h1>Where's Waldo</h1>
-				<Button func={toggleShowLeaderboard} text={'Leaderboard'} />
+				<Button cta={toggleLeaderboard} text={'Leaderboard'} />
 			</header>
 			<main className='allLevels'>{mainContent}</main>
 			{showLeaderboard ? (
-				<Leaderboard
-					show={showLeaderboard}
-					toggle={toggleShowLeaderboard}
-				/>
+				<Leaderboard show={showLeaderboard} toggle={toggleLeaderboard} />
 			) : null}
 		</div>
 	);
