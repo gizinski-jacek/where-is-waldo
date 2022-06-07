@@ -11,23 +11,23 @@ import Footer from './components/Footer';
 const App = () => {
 	const [allLevelsData, setAllLevelsData] = useState([]);
 	const [levelData, setLevelData] = useState();
-	const [gameTime, setGameTime] = useState(0);
 	const [gameStartTime, setGameStartTime] = useState();
-	const [stopTimer, setStopTimer] = useState(false);
+	const [currentGameTime, setCurrentGameTime] = useState(0);
+	const [timerStopped, setTimerStopped] = useState(false);
 
 	const goToLevel = (id) => {
 		setLevelData(allLevelsData.find((level) => level.id === id));
-		setGameTime(0);
+		setCurrentGameTime(0);
 		setGameStartTime(Date.now());
-		setStopTimer(false);
+		setTimerStopped(false);
 	};
 
-	const fnSetStopTimer = () => {
-		setStopTimer(true);
+	const stopTimer = () => {
+		setTimerStopped(true);
 	};
 
-	const fnSetGameTime = (time) => {
-		setGameTime(time);
+	const updateGameTime = (time) => {
+		setCurrentGameTime(time);
 	};
 
 	useEffect(() => {
@@ -55,11 +55,15 @@ const App = () => {
 				</Route>
 				<Route exact path='/game'>
 					<Timer
-						stop={stopTimer}
+						stop={timerStopped}
 						startDate={gameStartTime}
-						fnSetTime={fnSetGameTime}
+						updateGameTime={updateGameTime}
 					/>
-					<Game data={levelData} time={gameTime} fnStopTimer={fnSetStopTimer} />
+					<Game
+						data={levelData}
+						gameTime={currentGameTime}
+						stopTimer={stopTimer}
+					/>
 					<Footer />
 				</Route>
 			</Switch>
