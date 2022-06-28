@@ -1,6 +1,10 @@
-const CharacterPic = ({ photoURL, name, found }) => {
+const CharacterPic = ({ data }) => {
 	return (
-		<img src={photoURL} alt={name} className={found ? 'found' : 'notFound'} />
+		<img
+			src={data.photoURL}
+			alt={data.name}
+			className={data.found ? 'found' : 'notFound'}
+		/>
 	);
 };
 
