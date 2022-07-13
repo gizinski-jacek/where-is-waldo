@@ -60,25 +60,25 @@ const Leaderboard = ({ show, toggle }) => {
 				<div className='leaderboardControls'>
 					<Button
 						id='Level 1'
-						func={fnSetSortByLevel}
+						cta={fnSetSortByLevel}
 						text={'Level 1'}
 						isActive={sortByLevel === 'Level 1'}
 					/>
 					<Button
 						id='Level 2'
-						func={fnSetSortByLevel}
+						cta={fnSetSortByLevel}
 						text={'Level 2'}
 						isActive={sortByLevel === 'Level 2'}
 					/>
 					<Button
 						id='Level 3'
-						func={fnSetSortByLevel}
+						cta={fnSetSortByLevel}
 						text={'Level 3'}
 						isActive={sortByLevel === 'Level 3'}
 					/>
 					<Button
 						id='Level 4'
-						func={fnSetSortByLevel}
+						cta={fnSetSortByLevel}
 						text={'Level 4'}
 						isActive={sortByLevel === 'Level 4'}
 					/>
