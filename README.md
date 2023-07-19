@@ -4,19 +4,21 @@ Where's Waldo (A Photo Tagging App)
 
 ## Table of contents
 
-- [Github & Live](#github--live)
-- [Getting Started](#getting-started)
-- [React](#react)
-- [Deploy](#deploy)
-- [Features](#features)
-- [Status](#status)
-- [Contact](#contact)
+- [Where's Waldo (A Photo Tagging App)](#wheres-waldo-a-photo-tagging-app)
+  - [Table of contents](#table-of-contents)
+- [Github \& Live](#github--live)
+  - [Getting Started](#getting-started)
+  - [React](#react)
+  - [Deploy](#deploy)
+  - [Features](#features)
+  - [Status](#status)
+  - [Contact](#contact)
 
 # Github & Live
 
 Github repo can be found [here](https://github.com/gizinski-jacek/where-is-waldo).
 
-Live demo can be found on [Heroku](https://where-is-waldo-685893.herokuapp.com).
+Live demo can be found on [Render](https://where-is-waldo.onrender.com).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
